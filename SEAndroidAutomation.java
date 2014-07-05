@@ -45,7 +45,29 @@ public class SEAndroidAutomation{
 			}
 			bw.close();
 			System.out.println("Done Writing the Bugreport to ./"+dirName+"audit.log");
-            
+			
+			pr = Runtime.getRuntime().exec("audit2allow ./"+dirName+"/audit.log");
+			br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            		f = new File("./"+dirName+"/Rules.txt");
+			fw = new FileWriter(f.getAbsoluteFile());
+			bw = new BufferedWriter(fw);
+			temp = br.readLine()+"\n";
+			while(temp != null){
+				bw.write(temp);
+				temp = br.readLine()+"\n";			
+			}
+			pr = Runtime.getRuntime().exec("cat ./"+dirName+"/Rules.txt"+" | grep allow");
+			br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            		f = new File("./"+dirName+"/OnlyRules.txt");
+			fw = new FileWriter(f.getAbsoluteFile());
+			bw = new BufferedWriter(fw);
+			temp = br.readLine()+"\n";
+			while(temp != null){
+				bw.write(temp);
+				temp = br.readLine()+"\n";			
+			}
+			System.out.println("Done Writing the Rules to ./"+dirName+"OnlyRules.txt");
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -5,18 +5,14 @@ public class SEAndroidAutomation{
 		String mkdirCmd[] = {"mkdir", dirName};
 		String cdDirCmd[] = {"cd", dirName};
 		String sepolicyPullCmd[] = {"adb", "pull","sepolicy","./"+dirName};
-		String a = "dumpstate"+ ">"+ "./"+dirName+"/dumpstate.log";
-		String b = "dumpsys" +">"+"./"+dirName+"/dumpsys.log";
-		String c = "logcat"+"-d"+">"+"./"+dirName+"/logcat.log";
-		String d = "cat"+"./"+dirName+"/dumpstate.log"+ "./"+dirName+"/dumpsys.log"+ "./"+dirName+"/logcat.log"+ "./"+dirName+"/audit.log";
-		String bugReportCmd[] = {a,b,c,d};
-		//String bugReportCmd[] = {"adb", "shell", "su", "-c"+ "cat"+"dmesg"+">"+"./"+dirName+"audit.log"};
-		String ruleCmd[] = {"audit2allow", "audit.log",">","Rules"};
-		String ruleCmd2[] = {"cat", "Rules", "|", "grep ","allow",">","OnlyRules"};
+		String bugReportCmd[] = {"adb", "bugReport"};
+		String ruleCmd[] = {"audit2allow", "./"+dirName+"/audit.log"};//,">","Rules"};
+		String ruleCmd2[] = {"cat", "Rules", "|", "grep ","allow"};//,">","OnlyRules"};
 		try{	
 			Runtime rt = Runtime.getRuntime();
 		
 			ProcessBuilder pb = new ProcessBuilder(mkdirCmd);
+			pb.redirectErrorStream(true);
 			Process pr = pb.start();
 			pr.waitFor();		
 		
@@ -25,16 +21,30 @@ public class SEAndroidAutomation{
 			//pr.waitFor();
 		
 			pb = new ProcessBuilder(sepolicyPullCmd);
+			pb.redirectErrorStream(true);
 			pr = pb.start();
 			pr.waitFor();
 
 			//pb = new ProcessBuilder(bugReportCmd);
+			//pb.redirectErrorStream(true);
 			//pr = pb.start();
 			//pr.waitFor();
-			pr = Runtime.getRuntime().exec("adb shell");
-			DataOutputStream os = new DataOutputStream(pr.getOutputStream());            
-            		for (String tmpCmd : bugReportCmd) 
-            		        os.writeBytes(tmpCmd+"\n");
+
+			pr = Runtime.getRuntime().exec("adb bugreport");
+			BufferedReader br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			File f = new File("./"+dirName+"/audit.log");
+			FileWriter fw = new FileWriter(f.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			//DataOutputStream os = new DataOutputStream(pr.getOutputStream());            
+            		//for (String tmpCmd : bugReportCmd) 
+            		//      os.writeBytes(tmpCmd+"\n");
+			String temp = br.readLine()+"\n";
+			while(temp != null){
+					bw.write(temp);
+					temp = br.readLine()+"\n";
+			}
+			bw.close();
+			System.out.println("Done Writing the Bugreport to ./"+dirName+"audit.log");
             
 		}catch(Exception e){
 			e.printStackTrace();
