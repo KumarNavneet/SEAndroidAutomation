@@ -1,0 +1,44 @@
+import java.io.*;
+public class SEAndroidAutomation{
+	public static void main(String args[]){
+		String dirName = args[0];
+		String mkdirCmd[] = {"mkdir", dirName};
+		String cdDirCmd[] = {"cd", dirName};
+		String sepolicyPullCmd[] = {"adb", "pull","sepolicy","./"+dirName};
+		String a = "dumpstate"+ ">"+ "./"+dirName+"/dumpstate.log";
+		String b = "dumpsys" +">"+"./"+dirName+"/dumpsys.log";
+		String c = "logcat"+"-d"+">"+"./"+dirName+"/logcat.log";
+		String d = "cat"+"./"+dirName+"/dumpstate.log"+ "./"+dirName+"/dumpsys.log"+ "./"+dirName+"/logcat.log"+ "./"+dirName+"/audit.log";
+		String bugReportCmd[] = {a,b,c,d};
+		//String bugReportCmd[] = {"adb", "shell", "su", "-c"+ "cat"+"dmesg"+">"+"./"+dirName+"audit.log"};
+		String ruleCmd[] = {"audit2allow", "audit.log",">","Rules"};
+		String ruleCmd2[] = {"cat", "Rules", "|", "grep ","allow",">","OnlyRules"};
+		try{	
+			Runtime rt = Runtime.getRuntime();
+		
+			ProcessBuilder pb = new ProcessBuilder(mkdirCmd);
+			Process pr = pb.start();
+			pr.waitFor();		
+		
+			//pb = new ProcessBuilder(cdDirCmd);
+			//pr = pb.start();
+			//pr.waitFor();
+		
+			pb = new ProcessBuilder(sepolicyPullCmd);
+			pr = pb.start();
+			pr.waitFor();
+
+			//pb = new ProcessBuilder(bugReportCmd);
+			//pr = pb.start();
+			//pr.waitFor();
+			pr = Runtime.getRuntime().exec("adb shell");
+			DataOutputStream os = new DataOutputStream(pr.getOutputStream());            
+            		for (String tmpCmd : bugReportCmd) 
+            		        os.writeBytes(tmpCmd+"\n");
+            
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+}
