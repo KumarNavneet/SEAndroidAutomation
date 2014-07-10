@@ -8,8 +8,8 @@ public class RulesFrame extends JFrame implements ActionListener{
 	private JScrollPane scrollPane;
 	private JButton ok;
 	private JList lst;
-	private List<String> mRules;
-		public RulesFrame(List<String> Rules){
+	private String mRules[];
+		public RulesFrame(String []Rules){
 			mRules = Rules;			
 			setTitle("Select Rules to Add");
 			setSize(400,400);
