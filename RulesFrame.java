@@ -1,25 +1,28 @@
 import javax.swing.*;
 import java.io.*;
+//import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class RulesFrame extends JFrame implements ActionListener{
 	private JPanel topPanel;
 	private JScrollPane scrollPane;
 	private JButton ok;
 	private JList lst;
-	private List<String> mRules;
-		public RulesFrame(List<String> Rules){
+	private String RulesArray[];
+	private java.util.List<String> mRules;
+		public RulesFrame(java.util.List<String> Rules){
 			mRules = Rules;			
-			setTitle("Select Rules to Add");
-			setSize(400,400);
+			setTitle("Select Rules to Add(Ctrl+Select for multiple)");
+			setSize(500,500);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			topPanel = new JPanel();
 			topPanel.setLayout(new BorderLayout());
 			getContentPane().add(topPanel);
-
-			lst = new JList(Rules);
+			RulesArray = new String[Rules.size()];
+			lst = new JList(Rules.toArray(RulesArray));
 			scrollPane = new JScrollPane(lst);
 			topPanel.add(scrollPane, BorderLayout.CENTER);
 			
@@ -33,9 +36,8 @@ public class RulesFrame extends JFrame implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e){
 		int[] selectedIx = this.lst.getSelectedIndices();
-		int k = 0;
 		for(int i=0; i<selectedIx.length; i++)  
-			SEAndroidAutomation.rulesByUser[k++] = mRules[i];
+			SEAndroidAutomation.rulesByUser.add(RulesArray[selectedIx[i]]);
 			//System.out.println("Selected Rule : "+mRules[i]);
 		this.dispose();
 		SEAndroidAutomation.afterOkClick();

@@ -1,11 +1,17 @@
 
 
+#============= consoletype_t ==============
+allow consoletype_t iso9660_t:file { read getattr ioctl append };
+
+#============= gnomeclock_systemctl_t ==============
+#!!!! This avc is allowed in the current policy
+
+allow gnomeclock_systemctl_t init_var_run_t:dir read;
+
 #============= httpd_t ==============
 allow httpd_t admin_home_t:file getattr;
 
 #============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
 allow locate_t initrc_tmp_t:file read;
 
 #============= pulseaudio_t ==============
@@ -15,166 +21,9 @@ allow pulseaudio_t iso9660_t:file append;
 allow setfiles_t iso9660_t:file append;
 
 #============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
 allow system_mail_t user_home_dir_t:dir read;
 
+#============= wine_t ==============
+#!!!! This avc can be allowed using the boolean 'mmap_low_allowed'
 
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
-
-
-#============= httpd_t ==============
-allow httpd_t admin_home_t:file getattr;
-
-#============= locate_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow locate_t initrc_tmp_t:file read;
-
-#============= pulseaudio_t ==============
-allow pulseaudio_t iso9660_t:file append;
-
-#============= setfiles_t ==============
-allow setfiles_t iso9660_t:file append;
-
-#============= system_mail_t ==============
-
-#!!!! This avc is allowed in the current policy
-allow system_mail_t user_home_dir_t:dir read;
+allow wine_t self:memprotect mmap_zero;
